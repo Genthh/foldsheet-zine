@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f4f0e6" />
+    <title>Foldsheet · Pocket zine maker</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="model.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <main>
+      <header class="mast">
+        <div>
+          <h1>Foldsheet<span>.</span></h1>
+          <p>Make an eight-page pocket zine from a single sheet of paper.</p>
+        </div>
+        <button class="print" id="print" type="button">Print sheet</button>
+      </header>
+      <div class="desk">
+        <section class="proof" aria-labelledby="proof-title">
+          <div class="section-head">
+            <h2 id="proof-title">Sheet proof</h2>
+            <span>Front side</span>
+          </div>
+          <div class="proof-board"><div id="proof" class="sheet"></div></div>
+          <p class="caption">
+            Select any panel to edit its page. The top row prints upside down
+            for folding.
+          </p>
+        </section>
+        <section class="editor" aria-labelledby="editor-title">
+          <div class="section-head">
+            <h2 id="editor-title">Page editor</h2>
+            <span id="position"></span>
+          </div>
+          <label for="page">Page</label
+          ><select id="page"></select>
+          <label for="title">Title</label
+          ><input id="title" maxlength="28" autocomplete="off" />
+          <label for="body">Body</label
+          ><textarea id="body" maxlength="160" rows="5"></textarea>
+          <p class="counter" id="count"></p>
+          <p id="save-status" role="status"></p>
+        </section>
+      </div>
+      <details class="instructions">
+        <summary>How to cut and fold</summary>
+        <ol>
+          <li>
+            Print one-sided in landscape at 100% scale with headers and footers
+            off.
+          </li>
+          <li>Crease all the panel boundaries, then unfold the sheet.</li>
+          <li>
+            Cut along the middle horizontal crease, between the first and third
+            vertical creases.
+          </li>
+          <li>
+            Fold along the long center crease with the printed sides facing out.
+            Push the short ends together until the slit opens into a cross.
+          </li>
+          <li>Wrap the pages around the cross with page 1 facing out.</li>
+        </ol>
+      </details>
+    </main>
+    <div id="print-sheet" class="sheet" aria-hidden="true"></div>
+  </body>
+</html>
