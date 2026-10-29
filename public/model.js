@@ -53,6 +53,70 @@ const Foldsheet = (() => {
     return starter();
   }
 
+  const maxFileBytes = 24 * 1024;
+
+  function draftFile(pages) {
+    return JSON.stringify({ format: "foldsheet", version: 1, pages }, null, 2);
+  }
+
+  function draftFilename(title) {
+    const slug = title
+      .normalize("NFKD")
+      .replace(/\p{M}+/gu, "")
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, "-")
+      .replace(/^-+|-+$/g, "");
+    return (slug || "untitled") + "-foldsheet.json";
+  }
+
+  function hasKeys(value, keys) {
+    return (
+      value !== null &&
+      typeof value === "object" &&
+      Object.keys(value).length === keys.length &&
+      keys.every((key) => Object.hasOwn(value, key))
+    );
+  }
+
+  function parseFile(raw) {
+    if (
+      typeof raw !== "string" ||
+      new TextEncoder().encode(raw).length > maxFileBytes
+    ) {
+      throw new RangeError("Choose a draft smaller than 24 KB.");
+    }
+    let doc;
+    try {
+      doc = JSON.parse(raw);
+    } catch {
+      throw new Error("This file contains invalid JSON.");
+    }
+    if (
+      !hasKeys(doc, ["format", "version", "pages"]) ||
+      doc.format !== "foldsheet" ||
+      doc.version !== 1
+    ) {
+      throw new Error("Choose a version 1 Foldsheet draft.");
+    }
+    if (!Array.isArray(doc.pages) || doc.pages.length !== 8) {
+      throw new Error("A Foldsheet draft needs exactly eight pages.");
+    }
+    return doc.pages.map((page, index) => {
+      if (
+        !hasKeys(page, ["title", "body"]) ||
+        typeof page.title !== "string" ||
+        typeof page.body !== "string" ||
+        page.title.length > maxTitle ||
+        page.body.length > maxBody
+      ) {
+        throw new Error(
+          "Check the title and body lengths on page " + (index + 1) + ".",
+        );
+      }
+      return { title: page.title, body: page.body };
+    });
+  }
+
   function impose(pages) {
     return order.map((number, position) => ({
       ...pages[number - 1],
@@ -61,7 +125,17 @@ const Foldsheet = (() => {
     }));
   }
 
-  return { starter, readDraft, impose, maxTitle, maxBody };
+  return {
+    starter,
+    readDraft,
+    impose,
+    maxTitle,
+    maxBody,
+    maxFileBytes,
+    draftFile,
+    draftFilename,
+    parseFile,
+  };
 })();
 
 if (typeof module !== "undefined") module.exports = Foldsheet;
