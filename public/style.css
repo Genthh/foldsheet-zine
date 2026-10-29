@@ -1,12 +1,12 @@
 :root {
   color-scheme: light;
-  --paper: #fffcf3;
-  --ink: #292621;
-  --rust: #993c27;
-  --line: #a59b8b;
-  font-family: "Work Sans", Arial, sans-serif;
+  --paper: #fffcf1;
+  --ink: #3d142a;
+  --berry: #a91a4f;
+  --line: #977782;
+  font-family: var(--identity-font), Arial, sans-serif;
   color: var(--ink);
-  background: #f4f0e6;
+  background: #fbeed8;
 }
 * {
   box-sizing: border-box;
@@ -15,8 +15,8 @@ body {
   margin: 0;
 }
 main {
-  width: min(1130px, 100%);
-  padding: clamp(18px, 4vw, 54px);
+  width: min(1280px, 100%);
+  padding: clamp(16px, 3.2vw, 44px);
   margin: auto;
 }
 button,
@@ -31,84 +31,146 @@ summary {
   cursor: pointer;
 }
 :focus-visible {
-  outline: 3px solid #154b85;
-  outline-offset: 3px;
-}
-.mast {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 18px;
-  border-top: 5px solid var(--ink);
-  border-bottom: 1px solid var(--ink);
-  padding: 25px 0;
-}
-h1,
-h2,
-.page-title {
-  font-family: "DM Serif Text", Georgia, serif;
+  outline: 3px solid #005c6c;
+  outline-offset: 4px;
 }
 h1,
 h2,
 p {
   margin: 0;
 }
+.mast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(14px, 3vw, 40px);
+  padding: clamp(19px, 3vw, 36px) clamp(16px, 3.5vw, 42px);
+  background: #f7c8b9;
+  border: 1.5px solid var(--ink);
+  border-radius: 40px 5px 28px 5px;
+  box-shadow: 4px 5px 0 var(--ink);
+  margin: 0 5px 36px 0;
+}
 h1 {
-  font-size: clamp(54px, 9vw, 112px);
-  line-height: 0.96;
-  font-weight: 500;
-  letter-spacing: -0.075em;
+  font-family: var(--identity-font), sans-serif;
+  font-size: clamp(49px, 8.6vw, 122px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.085em;
 }
 h1 span {
-  color: var(--rust);
+  color: var(--berry);
 }
 .mast p {
-  max-width: 36ch;
-  margin-top: 14px;
-  line-height: 1.45;
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: clamp(15px, 1.7vw, 20px);
+  line-height: 1.32;
+}
+.book-mark {
+  position: relative;
+  width: clamp(65px, 11vw, 132px);
+  aspect-ratio: 1.12;
+}
+.book-mark i {
+  position: absolute;
+  width: 54%;
+  height: 82%;
+  top: 7%;
+  left: 12%;
+  border: 2px solid var(--ink);
+  background: #fff3d5;
+  transform: rotate(-22deg) skewY(-8deg);
+}
+.book-mark i:nth-child(2) {
+  left: 29%;
+  top: 11%;
+  transform: rotate(-8deg) skewY(-8deg);
+  background: #f399a8;
+}
+.book-mark i:last-child {
+  left: 40%;
+  top: 14%;
+  transform: rotate(10deg) skewY(-8deg);
+  background: repeating-radial-gradient(
+    ellipse at 0 82%,
+    #a91a4f 0 7%,
+    #ffe4b9 7.5% 11%,
+    #b92358 11.5% 16%
+  );
 }
 .print {
-  border: 1px solid var(--ink);
-  border-radius: 2px;
-  padding: 12px 20px;
-  color: var(--paper);
+  justify-self: end;
   background: var(--ink);
+  color: var(--paper);
+  border: 1.5px solid var(--ink);
+  box-shadow: 3px 3px 0 #ae5e79;
+  border-radius: 0;
+  font-weight: 700;
+  font-size: 16px;
   white-space: nowrap;
+  padding: 13px 21px;
+  transform: rotate(-2deg);
 }
 .print:hover {
-  background: var(--rust);
+  background: #732442;
 }
 .desk {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(230px, 1fr);
-  gap: clamp(20px, 4vw, 42px);
-  padding: 24px 0;
+  grid-template-columns: minmax(0, 2fr) minmax(250px, 0.86fr);
+  gap: clamp(24px, 4vw, 54px);
+  align-items: start;
 }
 .section-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 13px;
+  margin-bottom: 14px;
 }
 h2 {
-  font-weight: 500;
-  font-size: 26px;
-  letter-spacing: -0.055em;
+  font-weight: 750;
+  font-size: clamp(24px, 3vw, 38px);
+  letter-spacing: -0.065em;
+  line-height: 1.05;
 }
 .section-head span,
 .folio,
 .counter {
-  font-family: "Courier Prime", monospace;
+  font-family: ui-monospace, "Courier New", monospace;
 }
 .section-head span {
-  color: #635448;
+  color: #69324a;
   font-size: 12px;
 }
 .proof-board {
-  background: #ddd6c6;
-  border: 1px solid var(--line);
-  padding: clamp(12px, 3vw, 34px);
+  background-color: #f4b4be;
+  background-image: radial-gradient(#93495a 0.65px, transparent 0.85px);
+  background-size: 5px 5px;
+  position: relative;
+  border: 1.5px solid var(--ink);
+  padding: clamp(15px, 2.7vw, 34px);
+  border-radius: 2px 15px 2px 2px;
+}
+.proof-board::before,
+.proof-board::after {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 12px;
+  background: #f8d193;
+  border-inline: 2px dotted #ae7757;
+  transform: rotate(-20deg);
+  z-index: 3;
+  pointer-events: none;
+}
+.proof-board::before {
+  left: 8px;
+  top: 8px;
+}
+.proof-board::after {
+  right: 8px;
+  bottom: 8px;
 }
 .sheet {
   display: grid;
@@ -118,7 +180,7 @@ h2 {
   background: var(--paper);
 }
 #proof {
-  box-shadow: 1px 3px 8px #30241838;
+  box-shadow: 2px 3px 0 #641e3c;
 }
 .panel {
   position: relative;
@@ -132,12 +194,12 @@ h2 {
   text-align: left;
 }
 .panel[aria-pressed="true"] {
-  outline: 3px solid var(--rust);
+  outline: 3px solid var(--berry);
   outline-offset: -3px;
   z-index: 1;
 }
 .panel:focus-visible {
-  outline: 4px solid #154b85;
+  outline: 4px solid #005c6c;
   outline-offset: -4px;
   z-index: 2;
 }
@@ -158,10 +220,10 @@ h2 {
   overflow-wrap: anywhere;
 }
 .page-title {
-  font-weight: 600;
-  font-size: 16cqw;
-  line-height: 1;
-  letter-spacing: -0.045em;
+  font-weight: 750;
+  font-size: 15cqw;
+  line-height: 0.97;
+  letter-spacing: -0.06em;
 }
 .page-body {
   margin-top: 6%;
@@ -176,36 +238,41 @@ h2 {
   font-weight: 700;
 }
 .cover {
-  background: #f3c9a6;
-  color: #562c20;
+  background: #ffdb88;
 }
 .cover::after {
   content: "";
   position: absolute;
-  width: 48%;
-  height: 18%;
   bottom: 6%;
   right: 8%;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  transform: rotate(-24deg);
+  width: 34%;
+  height: 24%;
+  background: repeating-radial-gradient(
+    ellipse at bottom right,
+    #9c164d 0 9%,
+    transparent 10% 17%
+  );
+  border-radius: 100% 0 0 0;
   pointer-events: none;
 }
-.caption,
-.instructions li,
-#save-status {
-  line-height: 1.5;
+.editor {
+  padding: 25px clamp(14px, 2vw, 26px) 20px;
+  background: #fff9e9;
+  border: 1.5px solid var(--ink);
+  box-shadow: 3px 4px 0 #e3bb9e;
 }
-.caption,
-.counter,
-#save-status {
-  color: #62564a;
-  font-size: 13px;
-  margin-top: 9px;
+.editor .section-head {
+  border-bottom: 2px dashed #c58a99;
+  padding-bottom: 15px;
+}
+.editor .section-head span {
+  background: #f6cfcc;
+  padding: 4px;
+  white-space: nowrap;
 }
 .editor label {
   display: block;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   margin: 16px 0 6px;
 }
@@ -215,24 +282,40 @@ h2 {
   width: 100%;
   min-width: 0;
   padding: 10px 12px;
-  border: 1px solid #84796d;
-  border-radius: 2px;
+  border: 1px solid #896478;
+  border-radius: 0;
   color: var(--ink);
-  background: var(--paper);
+  background: #fffcf3;
 }
 .editor textarea {
   resize: vertical;
   line-height: 1.45;
 }
+.caption,
+.instructions li,
+#save-status {
+  line-height: 1.5;
+}
+.caption,
+.counter,
+#save-status {
+  color: #694657;
+  font-size: 13px;
+  margin-top: 9px;
+}
 .counter {
   text-align: right;
 }
 .instructions {
-  border-block: 1px solid var(--line);
+  width: fit-content;
+  max-width: 100%;
+  border-top: 2px solid var(--ink);
+  margin-top: 24px;
 }
 .instructions summary {
-  padding: 16px 0;
-  font-weight: 600;
+  padding: 12px 10px 12px 0;
+  font-weight: 700;
+  color: var(--berry);
 }
 .instructions ol {
   max-width: 75ch;
@@ -245,16 +328,36 @@ h2 {
 #print-sheet {
   display: none;
 }
-@media (max-width: 680px) {
+@media (max-width: 750px) {
   .desk {
     grid-template-columns: 1fr;
   }
   .mast {
-    align-items: start;
-    flex-direction: column;
+    grid-template-columns: auto 1fr;
   }
-  .proof-board {
-    padding: 12px;
+  .print {
+    justify-self: start;
+    grid-column: 2;
+  }
+}
+@media (max-width: 480px) {
+  .mast {
+    grid-template-columns: 1fr auto;
+    row-gap: 15px;
+  }
+  .mast > div:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .book-mark {
+    width: 46px;
+  }
+  .print {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    font-size: 14px;
+    padding: 10px 13px;
   }
 }
 @page {
@@ -300,7 +403,6 @@ h2 {
     bottom: 3mm;
   }
   .cover {
-    background: #f3c9a6;
     print-color-adjust: exact;
   }
 }

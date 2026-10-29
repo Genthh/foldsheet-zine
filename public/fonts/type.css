@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("./bricolagegrotesque.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --identity-font: "Bricolage Grotesque", sans-serif;
+}

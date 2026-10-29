@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#f4f0e6" />
+    <meta name="theme-color" content="#fbeed8" />
     <title>Foldsheet · Pocket zine maker</title>
     <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="fonts/type.css" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="model.js"></script>
     <script defer src="app.js"></script>
@@ -13,6 +14,7 @@
   <body>
     <main>
       <header class="mast">
+        <div class="book-mark" aria-hidden="true"><i></i><i></i><i></i></div>
         <div>
           <h1>Foldsheet<span>.</span></h1>
           <p>Make an eight-page pocket zine from a single sheet of paper.</p>
@@ -27,8 +29,8 @@
           </div>
           <div class="proof-board"><div id="proof" class="sheet"></div></div>
           <p class="caption">
-            Select any panel to edit its page. The top row prints upside down
-            for folding.
+            Pick a panel to edit. The upper row folds over when you make the
+            book.
           </p>
         </section>
         <section class="editor" aria-labelledby="editor-title">
