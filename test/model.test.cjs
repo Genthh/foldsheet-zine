@@ -61,3 +61,48 @@ test("invalid files never partially import or coerce data", () => {
   doc.pages[0] = JSON.parse('{"title":"","body":"","__proto__":{"flag":true}}');
   assert.throws(() => parseFile(JSON.stringify(doc)), /page 1/);
 });
+
+test("custom cover inks and motifs survive export, restore and import without changing page order", () => {
+  const {
+    draftFile,
+    restore,
+    parseBook,
+    impose,
+  } = require("../public/model.js");
+  const pages = starter();
+  for (const motif of ["rings", "fan", "ribbon", "none"]) {
+    const cover = { motif, ink: "indigo" };
+    const file = draftFile(pages, cover);
+    const restored = restore(file);
+    assert.deepEqual(restored, { pages, cover });
+    assert.deepEqual(parseBook(file), restored);
+    assert.equal(impose(restored.pages)[7].number, 1);
+  }
+});
+test("legacy exports and array storage use original cover; invalid styles are rejected", () => {
+  const {
+    draftFile,
+    restore,
+    parseBook,
+    defaultCover,
+  } = require("../public/model.js");
+  const pages = starter();
+  const legacy = JSON.stringify({ format: "foldsheet", version: 1, pages });
+  assert.deepEqual(restore(JSON.stringify(pages)), {
+    pages,
+    cover: defaultCover,
+  });
+  assert.deepEqual(parseBook(legacy), { pages, cover: defaultCover });
+  assert.deepEqual(JSON.parse(draftFile(pages)), JSON.parse(legacy));
+  for (const bad of [
+    null,
+    { ink: "red", motif: "fan" },
+    { ink: "forest", motif: "<script>" },
+    { ink: "indigo", motif: "rings", style: "url(x)" },
+  ]) {
+    assert.throws(
+      () => parseBook(JSON.stringify({ ...JSON.parse(legacy), cover: bad })),
+      /cover/,
+    );
+  }
+});

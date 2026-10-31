@@ -55,8 +55,27 @@ const Foldsheet = (() => {
 
   const maxFileBytes = 24 * 1024;
 
-  function draftFile(pages) {
-    return JSON.stringify({ format: "foldsheet", version: 1, pages }, null, 2);
+  const defaultCover = Object.freeze({ motif: "rings", ink: "raspberry" });
+  const motifs = ["rings", "fan", "ribbon", "none"];
+  const inks = ["raspberry", "indigo", "forest"];
+
+  function readCover(value) {
+    if (
+      !hasKeys(value, ["motif", "ink"]) ||
+      !motifs.includes(value.motif) ||
+      !inks.includes(value.ink)
+    ) {
+      throw new Error("Choose a supported cover motif and ink.");
+    }
+    return { motif: value.motif, ink: value.ink };
+  }
+
+  function draftFile(pages, cover = defaultCover) {
+    const design = readCover(cover);
+    const book = { format: "foldsheet", version: 1, pages };
+    if (design.motif !== defaultCover.motif || design.ink !== defaultCover.ink)
+      book.cover = design;
+    return JSON.stringify(book, null, 2);
   }
 
   function draftFilename(title) {
@@ -78,7 +97,7 @@ const Foldsheet = (() => {
     );
   }
 
-  function parseFile(raw) {
+  function parseBook(raw) {
     if (
       typeof raw !== "string" ||
       new TextEncoder().encode(raw).length > maxFileBytes
@@ -92,7 +111,10 @@ const Foldsheet = (() => {
       throw new Error("This file contains invalid JSON.");
     }
     if (
-      !hasKeys(doc, ["format", "version", "pages"]) ||
+      !(
+        hasKeys(doc, ["format", "version", "pages"]) ||
+        hasKeys(doc, ["format", "version", "pages", "cover"])
+      ) ||
       doc.format !== "foldsheet" ||
       doc.version !== 1
     ) {
@@ -101,7 +123,10 @@ const Foldsheet = (() => {
     if (!Array.isArray(doc.pages) || doc.pages.length !== 8) {
       throw new Error("A Foldsheet draft needs exactly eight pages.");
     }
-    return doc.pages.map((page, index) => {
+    const cover = Object.hasOwn(doc, "cover")
+      ? readCover(doc.cover)
+      : { ...defaultCover };
+    const pages = doc.pages.map((page, index) => {
       if (
         !hasKeys(page, ["title", "body"]) ||
         typeof page.title !== "string" ||
@@ -115,6 +140,19 @@ const Foldsheet = (() => {
       }
       return { title: page.title, body: page.body };
     });
+    return { pages, cover };
+  }
+
+  function parseFile(raw) {
+    return parseBook(raw).pages;
+  }
+
+  function restore(raw) {
+    try {
+      return parseBook(raw);
+    } catch {
+      return { pages: readDraft(raw), cover: { ...defaultCover } };
+    }
   }
 
   function impose(pages) {
@@ -135,6 +173,9 @@ const Foldsheet = (() => {
     draftFile,
     draftFilename,
     parseFile,
+    parseBook,
+    restore,
+    defaultCover,
   };
 })();
 
