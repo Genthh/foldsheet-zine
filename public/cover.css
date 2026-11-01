@@ -1,0 +1,85 @@
+.motif-library {
+  position: absolute;
+  pointer-events: none;
+}
+.cover-controls {
+  margin: 16px 0 0;
+  padding: 8px 12px 12px;
+  border: 1px dashed #a27081;
+  min-width: 0;
+}
+.cover-controls legend {
+  font-weight: 750;
+  padding: 0 4px;
+}
+.cover-controls label {
+  margin-top: 6px;
+}
+[data-ink="raspberry"] {
+  --cover-stock: #ffdb88;
+  --cover-print: #761841;
+}
+[data-ink="indigo"] {
+  --cover-stock: #e2dcfb;
+  --cover-print: #35265e;
+}
+[data-ink="forest"] {
+  --cover-stock: #d5e8ca;
+  --cover-print: #194d3a;
+}
+.cover,
+.reader article[data-ink] {
+  color: var(--cover-print);
+  background: var(--cover-stock);
+}
+.cover {
+  display: flex;
+  flex-direction: column;
+}
+.cover .page-title,
+.cover .page-body {
+  flex: none;
+}
+.cover-art {
+  display: block;
+  flex: 0 1 21%;
+  min-height: 0;
+  margin: auto 0 0 auto;
+  width: 40%;
+}
+.compact-cover .page-title {
+  font-size: 11cqw;
+}
+.compact-cover .page-body {
+  margin-top: 4%;
+  font-size: 6cqw;
+  line-height: 1.1;
+}
+.reader article[data-ink] {
+  border-color: var(--cover-print);
+}
+.reader article[data-ink] .reader-position {
+  color: inherit;
+}
+.reader .cover-art {
+  width: clamp(64px, 20%, 120px);
+  height: auto;
+  margin: 12px 0 0 auto;
+}
+[data-motif="none"] .cover-art,
+.reader article:not([data-motif]) .cover-art {
+  display: none;
+}
+@media print {
+  .cover {
+    print-color-adjust: exact;
+  }
+  .compact-cover .page-title {
+    font-size: 12pt;
+  }
+  .compact-cover .page-body {
+    font-size: 8pt;
+    line-height: 1.18;
+    margin-top: 2mm;
+  }
+}

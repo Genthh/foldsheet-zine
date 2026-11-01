@@ -4,6 +4,8 @@ Write eight miniature pages and print their imposed layout on a single folding s
 
 ## Reading and exchanging drafts
 
+In **Front cover**, choose orbit rings, a paper fan, ribbon waves, or type alone. The ink and motif appear on page 1 in the proof, reader, and printed sheet. Draft downloads include custom cover choices; older version 1 files open with the raspberry rings design.
+
 Open **Read the folded zine** to turn through pages 1–8 upright. The sheet proof still shows the arrangement used for printing.
 
 Use **Download draft** to save all eight pages as a JSON file named after the cover. To restore a file, choose it under **Draft files**, check the cover title, and select **Replace current draft**. Files must contain an eight-page version 1 Foldsheet draft and fit within 24 KB. Cancel an import to keep editing the current draft.

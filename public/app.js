@@ -1,17 +1,36 @@
 (() => {
   const key = "foldsheet.draft.v1";
   const el = (id) => document.getElementById(id);
-  let pages;
+  let raw;
   try {
-    pages = Foldsheet.readDraft(localStorage.getItem(key));
+    raw = localStorage.getItem(key);
   } catch {
-    pages = Foldsheet.starter();
+    raw = null;
   }
+  let { pages, cover } = Foldsheet.restore(raw);
   let current = 0;
   let reading = 0;
   let pending;
   let request = 0;
   const select = el("page");
+
+  function coverArt() {
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("class", "cover-art");
+    svg.setAttribute("viewBox", "0 0 100 54");
+    svg.setAttribute("aria-hidden", "true");
+    svg.append(document.createElementNS(ns, "use"));
+    return svg;
+  }
+
+  function decorate(element) {
+    element.dataset.motif = cover.motif;
+    element.dataset.ink = cover.ink;
+    const use = element.querySelector("use");
+    if (cover.motif === "none") use.removeAttribute("href");
+    else use.setAttribute("href", "#motif-" + cover.motif);
+  }
 
   function makePanel(page, interactive) {
     const panel = document.createElement(interactive ? "button" : "div");
@@ -31,6 +50,7 @@
     folio.textContent = String(page.number).padStart(2, "0");
     if (page.number === 1) content.classList.add("cover");
     content.append(title, body, folio);
+    if (page.number === 1) content.append(coverArt());
     panel.append(content);
     return panel;
   }
@@ -50,7 +70,11 @@
   });
   pages.forEach((_, index) => select.add(new Option("", String(index))));
 
+  const reader = document.querySelector("#reading-view article");
+  reader.append(coverArt());
   function render() {
+    el("cover-motif").value = cover.motif;
+    el("cover-ink").value = cover.ink;
     pages.forEach((page, index) => {
       select.options[index].text =
         String(index + 1) + " — " + (page.title || "Untitled");
@@ -66,6 +90,14 @@
       const page = pages[number - 1];
       screen.setAttribute("aria-pressed", String(number === current + 1));
       for (const panel of [screen, print]) {
+        if (number === 1) {
+          const face = panel.querySelector(".cover");
+          decorate(face);
+          face.classList.toggle(
+            "compact-cover",
+            page.title.length > 18 || page.body.length > 90,
+          );
+        }
         panel.querySelector(".page-title").textContent = page.title;
         panel.querySelector(".page-body").textContent = page.body;
       }
@@ -83,9 +115,17 @@
       save();
     });
   }
+  for (const field of ["motif", "ink"]) {
+    el("cover-" + field).addEventListener("change", () => {
+      cover = { ...cover, [field]: el("cover-" + field).value };
+      render();
+      save();
+    });
+  }
+
   function save() {
     try {
-      localStorage.setItem(key, JSON.stringify(pages));
+      localStorage.setItem(key, Foldsheet.draftFile(pages, cover));
       el("save-status").textContent = "Draft saved on this device.";
     } catch {
       el("save-status").textContent =
@@ -94,6 +134,11 @@
   }
 
   function renderReader() {
+    if (reading === 0) decorate(reader);
+    else {
+      delete reader.dataset.ink;
+      delete reader.dataset.motif;
+    }
     el("reader-position").textContent = "Page " + (reading + 1) + " of 8";
     el("reader-title").textContent = pages[reading].title;
     el("reader-body").textContent = pages[reading].body;
@@ -111,7 +156,7 @@
   });
 
   el("export-draft").addEventListener("click", () => {
-    const blob = new Blob([Foldsheet.draftFile(pages)], {
+    const blob = new Blob([Foldsheet.draftFile(pages, cover)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
@@ -151,10 +196,10 @@
     }
     if (id !== request) return;
     try {
-      pending = Foldsheet.parseFile(raw);
+      pending = Foldsheet.parseBook(raw);
       el("import-status").textContent =
         "Ready to replace all eight pages with “" +
-        (pending[0].title || "Untitled") +
+        (pending.pages[0].title || "Untitled") +
         "”.";
       el("import-actions").hidden = false;
     } catch (error) {
@@ -164,7 +209,7 @@
 
   el("apply-import").addEventListener("click", () => {
     if (!pending) return;
-    pages = pending;
+    ({ pages, cover } = pending);
     current = 0;
     reading = 0;
     clearImport();

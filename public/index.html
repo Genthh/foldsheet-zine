@@ -9,10 +9,42 @@
     <link rel="stylesheet" href="fonts/type.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="drafts.css" />
+    <link rel="stylesheet" href="cover.css" />
     <script defer src="model.js"></script>
     <script defer src="app.js"></script>
   </head>
   <body>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="0"
+      height="0"
+      aria-hidden="true"
+      class="motif-library"
+    >
+      <defs>
+        <symbol id="motif-rings" viewBox="0 0 100 54">
+          <g fill="none" stroke="currentColor" stroke-width="3">
+            <ellipse cx="50" cy="27" rx="47" ry="24" />
+            <ellipse cx="50" cy="27" rx="36" ry="18" />
+            <ellipse cx="50" cy="27" rx="25" ry="12" />
+            <ellipse cx="50" cy="27" rx="14" ry="6" />
+          </g>
+        </symbol>
+        <symbol id="motif-fan" viewBox="0 0 100 54">
+          <path
+            fill="currentColor"
+            d="M4 45 11 24 48 48 22 13 38 6 51 47 50 3 67 5 55 47 78 9 91 20 58 48 96 30 98 48 52 52Z"
+          />
+        </symbol>
+        <symbol id="motif-ribbon" viewBox="0 0 100 54">
+          <g stroke="currentColor" fill="none" stroke-width="3">
+            <path d="M3 39C22 39 24 8 43 8S62 44 76 44 90 23 97 23" />
+            <path d="M3 45C22 45 24 14 43 14S62 50 76 50 90 29 97 29" />
+            <path d="M3 33C22 33 24 2 43 2S62 38 76 38 90 17 97 17" />
+          </g>
+        </symbol>
+      </defs>
+    </svg>
     <main>
       <header class="mast">
         <div class="book-mark" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -46,6 +78,22 @@
           <label for="body">Body</label
           ><textarea id="body" maxlength="160" rows="5"></textarea>
           <p class="counter" id="count"></p>
+          <fieldset class="cover-controls">
+            <legend>Front cover</legend>
+            <label for="cover-motif">Motif</label>
+            <select id="cover-motif">
+              <option value="rings">Orbit rings</option>
+              <option value="fan">Paper fan</option>
+              <option value="ribbon">Ribbon waves</option>
+              <option value="none">Type only</option>
+            </select>
+            <label for="cover-ink">Ink</label>
+            <select id="cover-ink">
+              <option value="raspberry">Raspberry</option>
+              <option value="indigo">Indigo</option>
+              <option value="forest">Forest</option>
+            </select>
+          </fieldset>
           <p id="save-status" role="status"></p>
         </section>
       </div>
